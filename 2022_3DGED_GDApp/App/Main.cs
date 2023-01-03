@@ -585,18 +585,19 @@ namespace GD.App
             #region Curve
 
             Curve3D curve3D = new Curve3D(CurveLoopType.Oscillate);
-            curve3D.Add(new Vector3(0, 100, 100), 0);
-            curve3D.Add(new Vector3(0, 100, 100), 1000);
-            curve3D.Add(new Vector3(200, 100, 0), 2500);
-           // curve3D.Add(new Vector3(0, 10, 100), 10000);
+            curve3D.Add(new Vector3(0, 25, 0), 0);
+            curve3D.Add(new Vector3(0, 25, -200), 10000);
+            curve3D.Add(new Vector3(0, 25, 5), 10000);
+            //curve3D.Add(new Vector3(0, 25, 100), 10000);
 
             cameraGameObject = new GameObject(AppData.CURVE_CAMERA_NAME);
-            cameraGameObject.Transform =
-                new Transform(null, null, null);
+
+            cameraGameObject.Transform = new Transform(null, new Vector3(-35, 0, 0), null);
+               
             cameraGameObject.AddComponent(new Camera(
                 MathHelper.PiOver2 / 2,
                 (float)_graphics.PreferredBackBufferWidth / _graphics.PreferredBackBufferHeight,
-                1f, 3500,
+                -100, 1500,
                   new Viewport(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight)));
 
             //define what action the curve will apply to the target game object
@@ -614,6 +615,8 @@ namespace GD.App
             cameraManager.SetActiveCamera(AppData.FIRST_PERSON_CAMERA_NAME);
         }
 
+
+        // To Initialize my stuff >>><<<
         private void InitializeCollidableContent(float worldScale)
         {
             InitializeCollidableGround(worldScale);
@@ -626,7 +629,7 @@ namespace GD.App
 
         private void InitializeNonCollidableContent(float worldScale)
         {
-            InitializeXYZ();
+            //InitializeXYZ();
 
             //create sky
             InitializeSkyBox(worldScale);
@@ -652,8 +655,9 @@ namespace GD.App
             //  throw new NotImplementedException();
         }
 
-        #region My Code
+        #region My Object Models
 
+        // Creating a simple Level Design for my Game
         private void InitializeWalls()
         {
 
