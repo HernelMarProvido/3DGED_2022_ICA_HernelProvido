@@ -585,10 +585,10 @@ namespace GD.App
             #region Curve
 
             Curve3D curve3D = new Curve3D(CurveLoopType.Oscillate);
-            curve3D.Add(new Vector3(0, 2, 5), 0);
-            curve3D.Add(new Vector3(0, 5, 10), 1000);
-            curve3D.Add(new Vector3(0, 8, 25), 2500);
-            curve3D.Add(new Vector3(0, 5, 35), 4000);
+            curve3D.Add(new Vector3(0, 100, 100), 0);
+            curve3D.Add(new Vector3(0, 100, 100), 1000);
+            curve3D.Add(new Vector3(200, 100, 0), 2500);
+           // curve3D.Add(new Vector3(0, 10, 100), 10000);
 
             cameraGameObject = new GameObject(AppData.CURVE_CAMERA_NAME);
             cameraGameObject.Transform =
@@ -596,7 +596,7 @@ namespace GD.App
             cameraGameObject.AddComponent(new Camera(
                 MathHelper.PiOver2 / 2,
                 (float)_graphics.PreferredBackBufferWidth / _graphics.PreferredBackBufferHeight,
-                0.1f, 3500,
+                1f, 3500,
                   new Viewport(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight)));
 
             //define what action the curve will apply to the target game object
@@ -618,7 +618,10 @@ namespace GD.App
         {
             InitializeCollidableGround(worldScale);
             //InitializeCollidableBox();
-           // InitializeCollidableHighDetailMonkey();
+            InitializeCollidableHighDetailMonkey();
+
+            //My Content
+            InitializeWalls();
         }
 
         private void InitializeNonCollidableContent(float worldScale)
@@ -629,7 +632,7 @@ namespace GD.App
             InitializeSkyBox(worldScale);
 
             //quad with crate texture
-            InitializeDemoQuad();
+            //InitializeDemoQuad();
 
             //load an FBX and draw
             //InitializeDemoModel();
@@ -648,6 +651,142 @@ namespace GD.App
         {
             //  throw new NotImplementedException();
         }
+
+        #region My Code
+
+        private void InitializeWalls()
+        {
+
+            var gameObject = new GameObject("Walls",ObjectType.Static, RenderType.Opaque);
+            var model = Content.Load<Model>("Assets/Models/Wall/CastleWall_Fixed");
+            var mesh = new Engine.ModelMesh(_graphics.GraphicsDevice, model);
+            var texture = Content.Load<Texture2D>("Assets/Textures/Walls/Castle Towers UV New");
+            var collider = new Collider(gameObject);
+
+            for (int i = 0; i < 10; i++)
+            {
+                gameObject = new GameObject("Wall Left Side" + i, ObjectType.Static, RenderType.Opaque);
+                gameObject.Transform = new Transform(
+                                   new Vector3(20, 39, 19),
+                                   new Vector3(0, 630.25f, 0),
+                                   new Vector3(20, 6.9f, -30.8f - (18.9f * i)));
+                gameObject.AddComponent(new Renderer(
+                new GDBasicEffect(litEffect),
+                new Material(texture, 1f),
+                mesh));
+
+                //add Collision Surface(s)
+                collider = new Collider(gameObject, true);
+                collider.AddPrimitive(new Box(
+                    gameObject.Transform.Translation,
+                    gameObject.Transform.Rotation,
+                    new Vector3(19.4f, 8, 3.4f)),
+                    new MaterialProperties(0.8f, 0.8f, 0.7f));
+                collider.Enable(gameObject, true, 50);
+                gameObject.AddComponent(collider);
+                sceneManager.ActiveScene.Add(gameObject);
+            }
+
+            //Right side Wall
+            for (int i = 0; i < 10; i++)
+            {
+                gameObject = new GameObject("Wall Right Side" + i, ObjectType.Static, RenderType.Opaque);
+                gameObject.Transform = new Transform(
+                    new Vector3(20, 39, 19),
+                    new Vector3(0, 630.25f, 0),
+                    new Vector3(-20, 6.9f, -30.8f - (18.9f * i)));
+                gameObject.AddComponent(new Renderer(
+                new GDBasicEffect(litEffect),
+                new Material(texture, 1f),
+                mesh));
+
+                //add Collision Surface(s)
+                collider = new Collider(gameObject, true);
+                collider.AddPrimitive(new Box(
+                    gameObject.Transform.Translation,
+                    gameObject.Transform.Rotation,
+                    new Vector3(19.4f, 8, 3.4f)),
+                    new MaterialProperties(0.8f, 0.8f, 0.7f));
+                collider.Enable(gameObject, true, 50);
+                gameObject.AddComponent(collider);
+                sceneManager.ActiveScene.Add(gameObject);
+            }
+
+            // Middle Walls level 1
+            for (int i = 0; i < 2; i++)
+            {
+                gameObject = new GameObject("Wall For Level 1" + i, ObjectType.Static, RenderType.Opaque);
+                gameObject.Transform = new Transform(
+                    new Vector3(20, 39, 19),
+                    Vector3.Zero,
+                    new Vector3(10 - (19.3f * i), 6.9f, -50));
+                gameObject.AddComponent(new Renderer(
+                new GDBasicEffect(litEffect),
+                new Material(texture, 1f),
+                mesh));
+                //add Collision Surface(s)
+                collider = new Collider(gameObject, true);
+                collider.AddPrimitive(new Box(
+                    gameObject.Transform.Translation,
+                    gameObject.Transform.Rotation,
+                    new Vector3(19.4f, 8, 3.4f)),
+                    new MaterialProperties(0.8f, 0.8f, 0.7f));
+                collider.Enable(gameObject, true, 50);
+                gameObject.AddComponent(collider);
+                sceneManager.ActiveScene.Add(gameObject);
+            }
+
+            // Middle Walls level 2
+            for (int i = 0; i < 2; i++)
+            {
+                gameObject = new GameObject("Wall For Level 2" + i, ObjectType.Static, RenderType.Opaque);
+                gameObject.Transform = new Transform(
+                    new Vector3(20, 39, 19),
+                    Vector3.Zero,
+                    new Vector3(10 - (19.3f * i), 6.9f, -100));
+                gameObject.AddComponent(new Renderer(
+                new GDBasicEffect(litEffect),
+                new Material(texture, 1f),
+                mesh));
+                //add Collision Surface(s)
+                collider = new Collider(gameObject, true);
+                collider.AddPrimitive(new Box(
+                    gameObject.Transform.Translation,
+                    gameObject.Transform.Rotation,
+                    new Vector3(19.4f, 8, 3.4f)),
+                    new MaterialProperties(0.8f, 0.8f, 0.7f));
+                collider.Enable(gameObject, true, 50);
+                gameObject.AddComponent(collider);
+                sceneManager.ActiveScene.Add(gameObject);
+            }
+
+            // Middle Walls level 3
+            for (int i = 0; i < 2; i++)
+            {
+                gameObject = new GameObject("Wall For Level 3" + i, ObjectType.Static, RenderType.Opaque);
+                gameObject.Transform = new Transform(
+                    new Vector3(20, 39, 19),
+                    Vector3.Zero,
+                    new Vector3(10 - (19.3f * i), 6.9f, -150));
+                gameObject.AddComponent(new Renderer(
+                new GDBasicEffect(litEffect),
+                new Material(texture, 1f),
+                mesh));
+                //add Collision Surface(s)
+                collider = new Collider(gameObject, true);
+                collider.AddPrimitive(new Box(
+                    gameObject.Transform.Translation,
+                    gameObject.Transform.Rotation,
+                    new Vector3(19.4f, 8, 3.4f)),
+                    new MaterialProperties(0.8f, 0.8f, 0.7f));
+                collider.Enable(gameObject, true, 50);
+                gameObject.AddComponent(collider);
+                sceneManager.ActiveScene.Add(gameObject);
+            }
+        }
+
+
+        #endregion
 
         private void InitializeCollidableGround(float worldScale)
         {
@@ -718,20 +857,26 @@ namespace GD.App
             var gameObject = new GameObject("my first collidable high detail monkey!", ObjectType.Static, RenderType.Opaque);
             gameObject.GameObjectType = GameObjectType.Consumable;
 
-            //TODO - rotation on triangle mesh not working
+            //Object size, rotation, position
             gameObject.Transform = new Transform(
-                new Vector3(1, 1, 1),
+                new Vector3(12, 12, 12),
                 new Vector3(0, 0, 0),
-                new Vector3(0, 1, 0));
+                new Vector3(0, 5, -200));
+
+            //Assest path of object
             var texture = Content.Load<Texture2D>("Assets/Textures/Props/Crates/crate2");
             var model = Content.Load<Model>("Assets/Models/monkey");
             var mesh = new Engine.ModelMesh(_graphics.GraphicsDevice, model);
 
+            //put object into game..
             gameObject.AddComponent(new Renderer(
                 new GDBasicEffect(litEffect),
-                new Material(texture, 1f, Color.Yellow),
+                new Material(texture, 1f, Color.Blue),
                 mesh));
 
+
+            // Show the collider lines
+            
             var model_medium = Content.Load<Model>("Assets/Models/monkey_medium");
             var collider = new Collider(gameObject);
             collider.AddPrimitive(CollisionUtility.GetTriangleMesh(model_medium,
@@ -740,6 +885,7 @@ namespace GD.App
             //NOTE - TriangleMesh colliders MUST be marked as IMMOVABLE=TRUE
             collider.Enable(gameObject, true, 1);
             gameObject.AddComponent(collider);
+            
 
             sceneManager.ActiveScene.Add(gameObject);
         }
@@ -810,11 +956,14 @@ namespace GD.App
         private void InitializeDemoQuad()
         {
             //game object
-            var gameObject = new GameObject("my first quad",
-                ObjectType.Dynamic, RenderType.Opaque);
+            var gameObject = new GameObject("Box",
+                ObjectType.Dynamic, RenderType.Transparent);
+
             gameObject.Transform = new Transform(null, null,
-                new Vector3(-2, 1, 0));  //World
+                new Vector3(4, 4, 4));  //World
+
             var texture = Content.Load<Texture2D>("Assets/Textures/Props/Crates/crate1");
+
             gameObject.AddComponent(new Renderer(new GDBasicEffect(litEffect),
                 new Material(texture, 1), new QuadMesh(_graphics.GraphicsDevice)));
 
