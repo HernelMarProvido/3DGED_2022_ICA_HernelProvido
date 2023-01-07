@@ -1,7 +1,7 @@
 ﻿#region Pre-compiler directives
 
 #define DEMO
-#define SHOW_DEBUG_INFO
+//#define SHOW_DEBUG_INFO
 
 #endregion
 
@@ -225,7 +225,7 @@ namespace GD.App
             var scaleToWindow = _graphics.GetScaleFactorForResolution(backGroundtexture, Vector2.Zero);
             //set transform
             menuGameObject.Transform = new Transform(
-                new Vector3(0.22f, 0.24f, 0.22f), //s
+                new Vector3(0.43f, 0.44f, 0.43f), //s
                 new Vector3(0, 0, 0), //r
                 new Vector3(0, 0, 0)); //t
 
@@ -600,7 +600,7 @@ namespace GD.App
 
             Curve3D curve3D = new Curve3D(CurveLoopType.Oscillate);
             curve3D.Add(new Vector3(0, 25, 0), 0);
-            curve3D.Add(new Vector3(0, 25, -200), 10000);
+            curve3D.Add(new Vector3(0, 25, -150), 10000);
             curve3D.Add(new Vector3(0, 25, 5), 10000);
             //curve3D.Add(new Vector3(0, 25, 100), 10000);
 
@@ -690,13 +690,13 @@ namespace GD.App
             var texture = Content.Load<Texture2D>("Assets/Textures/Walls/Castle Towers UV New");
             var collider = new Collider(gameObject);
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 11; i++)
             {
                 gameObject = new GameObject("Wall Left Side" + i, ObjectType.Static, RenderType.Opaque);
                 gameObject.Transform = new Transform(
                                    new Vector3(20, 39, 19),
                                    new Vector3(0, 630.25f, 0),
-                                   new Vector3(20, 6.9f, -30.8f - (18.9f * i)));
+                                   new Vector3(20, 6.9f, -10.8f - (18.9f * i)));
                 gameObject.AddComponent(new Renderer(
                 new GDBasicEffect(litEffect),
                 new Material(texture, 1f),
@@ -715,13 +715,13 @@ namespace GD.App
             }
 
             //Right side Wall
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 11; i++)
             {
                 gameObject = new GameObject("Wall Right Side" + i, ObjectType.Static, RenderType.Opaque);
                 gameObject.Transform = new Transform(
                     new Vector3(20, 39, 19),
                     new Vector3(0, 630.25f, 0),
-                    new Vector3(-20, 6.9f, -30.8f - (18.9f * i)));
+                    new Vector3(-20, 6.9f, -10.8f - (18.9f * i)));
                 gameObject.AddComponent(new Renderer(
                 new GDBasicEffect(litEffect),
                 new Material(texture, 1f),
@@ -819,7 +819,7 @@ namespace GD.App
                 gameObject.Transform = new Transform(
                     new Vector3(20, 39, 19),
                     Vector3.Zero,
-                    new Vector3(10 - (19.3f * i), 6.9f, -210));
+                    new Vector3(10 - (19.3f * i), 6.9f, -205));
                 gameObject.AddComponent(new Renderer(
                 new GDBasicEffect(litEffect),
                 new Material(texture, 1f),
@@ -836,6 +836,29 @@ namespace GD.App
                 sceneManager.ActiveScene.Add(gameObject);
             }
 
+            // Middle Walls Top
+            for (int i = 0; i < 2; i++)
+            {
+                gameObject = new GameObject("Wall For Level 3" + i, ObjectType.Static, RenderType.Opaque);
+                gameObject.Transform = new Transform(
+                    new Vector3(20, 39, 19),
+                    Vector3.Zero,
+                    new Vector3(10 - (19.3f * i), 6.9f, 0));
+                gameObject.AddComponent(new Renderer(
+                new GDBasicEffect(litEffect),
+                new Material(texture, 1f),
+                mesh));
+                //add Collision Surface(s)
+                collider = new Collider(gameObject, true);
+                collider.AddPrimitive(new Box(
+                    gameObject.Transform.Translation,
+                    gameObject.Transform.Rotation,
+                    new Vector3(19.4f, 8, 3.4f)),
+                    new MaterialProperties(0.8f, 0.8f, 0.7f));
+                collider.Enable(gameObject, true, 50);
+                gameObject.AddComponent(collider);
+                sceneManager.ActiveScene.Add(gameObject);
+            }
 
         }
          #endregion
