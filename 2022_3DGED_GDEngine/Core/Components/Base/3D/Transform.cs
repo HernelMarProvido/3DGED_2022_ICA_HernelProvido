@@ -28,7 +28,7 @@ namespace GD.Engine
 
         private Vector3 scale;
         private Vector3 rotation;
-        private Vector3 translation;
+        public Vector3 translation;
 
         /// <summary>
         /// Set to true if the translation, rotation, or scale change which affect World matrix

@@ -416,16 +416,51 @@ namespace GD.App
 
         private void LoadSounds()
         {
+            // Walking sounds effects 
             var soundEffect =
-                Content.Load<SoundEffect>("Assets/Audio/Diegetic/explode1");
+                Content.Load<SoundEffect>("Assets/Audio/Diegetic/Wood_Running_1.1_-2-2");
 
-            //add the new sound effect
             soundManager.Add(new Cue(
-                "boom1",
+                "walk",
                 soundEffect,
                 SoundCategoryType.Alarm,
-                new Vector3(1, 1, 0),
+                new Vector3(0.25f, 0.5f, 0),
+                true));
+            soundManager.Play2D("walk");
+            Application.SoundManager.Pause("walk");
+
+
+            soundEffect =
+              Content.Load<SoundEffect>("Assets/Audio/Placeholder/Entering-1");
+
+            soundManager.Add(new Cue(
+                "NEntering",
+                soundEffect,
+                SoundCategoryType.Alarm,
+                new Vector3(0.25f, 0, 0),
                 false));
+
+            soundEffect =
+               Content.Load<SoundEffect>("Assets/Audio/Placeholder/Entering-Kitchen");
+
+            soundManager.Add(new Cue(
+                "NEKitchen",
+                soundEffect,
+                SoundCategoryType.Alarm,
+                new Vector3(0.25f, 0, 0),
+                false));
+
+            soundEffect =
+               Content.Load<SoundEffect>("Assets/Audio/Placeholder/Grandfather-Note");
+
+            soundManager.Add(new Cue(
+                "NFKey",
+                soundEffect,
+                SoundCategoryType.Alarm,
+                new Vector3(0.25f, 0, 0),
+                false));
+
+
         }
 
         private void LoadTextures()
@@ -803,7 +838,31 @@ namespace GD.App
                 sceneManager.ActiveScene.Add(gameObject);
             }
 
-           
+
+            // Middle Walls End
+            for (int i = 0; i < 2; i++)
+            {
+                gameObject = new GameObject("Wall For Level 3" + i, ObjectType.Static, RenderType.Opaque);
+                gameObject.Transform = new Transform(
+                    new Vector3(20, 39, 19),
+                    Vector3.Zero,
+                    new Vector3(10 - (19.3f * i), 6.9f, -210));
+                gameObject.AddComponent(new Renderer(
+                new GDBasicEffect(litEffect),
+                new Material(texture, 1f),
+                mesh));
+                //add Collision Surface(s)
+                collider = new Collider(gameObject, true);
+                collider.AddPrimitive(new Box(
+                    gameObject.Transform.Translation,
+                    gameObject.Transform.Rotation,
+                    new Vector3(19.4f, 8, 3.4f)),
+                    new MaterialProperties(0.8f, 0.8f, 0.7f));
+                collider.Enable(gameObject, true, 50);
+                gameObject.AddComponent(collider);
+                sceneManager.ActiveScene.Add(gameObject);
+            }
+
 
         }
          #endregion
@@ -1196,24 +1255,24 @@ namespace GD.App
         private void InitializeCollidableHighDetailMonkey()
         {
             //game object
-            var gameObject = new GameObject("my first collidable high detail monkey!", ObjectType.Static, RenderType.Opaque);
+            var gameObject = new GameObject("Going to be the Big boss!", ObjectType.Static, RenderType.Opaque);
             gameObject.GameObjectType = GameObjectType.Consumable;
 
             //Object size, rotation, position
             gameObject.Transform = new Transform(
                 new Vector3(12, 12, 12),
                 new Vector3(0, 0, 0),
-                new Vector3(0, 5, -200));
+                new Vector3(0, 5, -190));
 
             //Assest path of object
-            var texture = Content.Load<Texture2D>("Assets/Textures/Props/Crates/crate2");
+            var texture = Content.Load<Texture2D>("Assets/Textures/Walls/sphere_txt");
             var model = Content.Load<Model>("Assets/Models/monkey");
             var mesh = new Engine.ModelMesh(_graphics.GraphicsDevice, model);
 
             //put object into game..
             gameObject.AddComponent(new Renderer(
                 new GDBasicEffect(litEffect),
-                new Material(texture, 1f, Color.Blue),
+                new Material(texture, 1f, Color.Gold),
                 mesh));
 
 
@@ -1675,17 +1734,17 @@ namespace GD.App
 
             #endregion
 
-            #region Demo - sound
+            #region Walking Sounds
 
-            if (Input.Keys.WasJustPressed(Keys.B))
+            if (Input.Keys.IsPressed(Keys.W) || Input.Keys.IsPressed(Keys.A) || Input.Keys.IsPressed(Keys.S) || Input.Keys.IsPressed(Keys.D))
             {
-                object[] parameters = { "boom1" };
-                EventDispatcher.Raise(
-                    new EventData(EventCategoryType.Player,
-                    EventActionType.OnWin,
-                    parameters));
+             
+                Application.SoundManager.Resume("walk");
 
-                //    Application.SoundManager.Play2D("boom1");
+            }
+            else
+            {
+                Application.SoundManager.Pause("walk");
             }
 
             #endregion

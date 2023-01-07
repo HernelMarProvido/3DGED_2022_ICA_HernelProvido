@@ -25,6 +25,30 @@
 /processorParam:Quality=Best
 /build:Assets/Audio/Diegetic/smokealarm1.ogg
 
+#begin Assets/Audio/Diegetic/Wood_Running_1.1_-2-2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Assets/Audio/Diegetic/Wood_Running_1.1_-2-2.wav
+
+#begin Assets/Audio/Placeholder/Entering-1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Assets/Audio/Placeholder/Entering-1.wav
+
+#begin Assets/Audio/Placeholder/Entering-Kitchen.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Assets/Audio/Placeholder/Entering-Kitchen.wav
+
+#begin Assets/Audio/Placeholder/Grandfather-Note.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Assets/Audio/Placeholder/Grandfather-Note.wav
+
 #begin Assets/Fonts/menu.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
