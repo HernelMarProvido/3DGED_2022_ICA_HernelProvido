@@ -13,6 +13,12 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin Assets/Audio/Diegetic/BgMusic.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Assets/Audio/Diegetic/BgMusic.wav
+
 #begin Assets/Audio/Diegetic/explode1.mp3
 /importer:Mp3Importer
 /processor:SoundEffectProcessor
@@ -402,6 +408,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Assets/Textures/Menu/Backgrounds/audiomenu.png
+
+#begin Assets/Textures/Menu/Backgrounds/BG.jpg
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Assets/Textures/Menu/Backgrounds/BG.jpg
 
 #begin Assets/Textures/Menu/Backgrounds/controlsmenu.png
 /importer:TextureImporter

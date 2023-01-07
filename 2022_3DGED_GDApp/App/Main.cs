@@ -208,7 +208,7 @@ namespace GD.App
             Material2D material = null;
             Renderer2D renderer2D = null;
             Texture2D btnTexture = Content.Load<Texture2D>("Assets/Textures/Menu/Controls/genericbtn");
-            Texture2D backGroundtexture = Content.Load<Texture2D>("Assets/Textures/Menu/Backgrounds/exitmenuwithtrans");
+            Texture2D backGroundtexture = Content.Load<Texture2D>("Assets/Textures/Menu/Backgrounds/BG");
             SpriteFont spriteFont = Content.Load<SpriteFont>("Assets/Fonts/menu");
             Vector2 btnScale = new Vector2(0.8f, 0.8f);
 
@@ -225,14 +225,14 @@ namespace GD.App
             var scaleToWindow = _graphics.GetScaleFactorForResolution(backGroundtexture, Vector2.Zero);
             //set transform
             menuGameObject.Transform = new Transform(
-                new Vector3(scaleToWindow, 1), //s
+                new Vector3(0.22f, 0.24f, 0.22f), //s
                 new Vector3(0, 0, 0), //r
                 new Vector3(0, 0, 0)); //t
 
             #region texture
 
             //material and renderer
-            material = new TextureMaterial2D(backGroundtexture, Color.White, 1);
+            material = new TextureMaterial2D(backGroundtexture, Color.Gray, 1);
             menuGameObject.AddComponent(new Renderer2D(material));
 
             #endregion
@@ -274,7 +274,7 @@ namespace GD.App
             #region text
 
             //material and renderer
-            material = new TextMaterial2D(spriteFont, "Play", new Vector2(70, 5), Color.White, 0.8f);
+            material = new TextMaterial2D(spriteFont, "Let's Play", new Vector2(30, 5), Color.Silver, 0.8f);
             //add renderer to draw the text
             renderer2D = new Renderer2D(material);
             menuGameObject.AddComponent(renderer2D);
@@ -286,57 +286,7 @@ namespace GD.App
 
             #endregion
 
-            #region Add Exit button and text
-
-            menuGameObject = new GameObject("exit");
-
-            menuGameObject.Transform = new Transform(
-                new Vector3(btnScale, 1), //s
-                new Vector3(0, 0, 0), //r
-                new Vector3(Application.Screen.ScreenCentre - btnScale * btnTexture.GetCenter() + new Vector2(0, 30), 0)); //t
-
-            #region texture
-
-            //material and renderer
-            material = new TextureMaterial2D(btnTexture, Color.Red, 0.9f);
-            //add renderer to draw the texture
-            renderer2D = new Renderer2D(material);
-            //add renderer as a component
-            menuGameObject.AddComponent(renderer2D);
-
-            #endregion
-
-            #region collider
-
-            //add bounding box for mouse collisions using the renderer for the texture (which will automatically correctly size the bounding box for mouse interactions)
-            buttonCollider2D = new ButtonCollider2D(menuGameObject, renderer2D);
-            //add any events on MouseButton (e.g. Left, Right, Hover)
-            buttonCollider2D.AddEvent(MouseButton.Left, new EventData(EventCategoryType.Menu, EventActionType.OnExit));
-            menuGameObject.AddComponent(buttonCollider2D);
-
-            #endregion
-
-            #region text
-
-            //button material and renderer
-            material = new TextMaterial2D(spriteFont, "Exit", new Vector2(70, 5), Color.White, 0.8f);
-            //add renderer to draw the text
-            renderer2D = new Renderer2D(material);
-            menuGameObject.AddComponent(renderer2D);
-
-            #endregion
-
-            #region demo - color change button
-
-            // menuGameObject.AddComponent(new UIColorFlipOnTimeBehaviour(Color.Red, Color.Orange, 500));
-
-            #endregion
-
-            //add to scene2D
-            mainMenuScene.Add(menuGameObject);
-
-            #endregion
-
+         
             #region Add Scene to Manager and Set Active
 
             //add scene2D to menu manager
@@ -375,7 +325,7 @@ namespace GD.App
 
             #region progress controller
 
-            uiGameObject.AddComponent(new UIProgressBarController(5, 10));
+            uiGameObject.AddComponent(new UIProgressBarController(0, 10));
 
             #endregion
 
@@ -414,6 +364,7 @@ namespace GD.App
             LoadModels();
         }
 
+        // Code for the sounds here
         private void LoadSounds()
         {
             // Walking sounds effects 
@@ -429,37 +380,59 @@ namespace GD.App
             soundManager.Play2D("walk");
             Application.SoundManager.Pause("walk");
 
+            // Background music for my game..
+            soundEffect =
+              Content.Load<SoundEffect>("Assets/Audio/Diegetic/BgMusic");
 
+            soundManager.Add(new Cue(
+                "BG-Music",
+                soundEffect,
+                SoundCategoryType.Alarm,
+                new Vector3(0.25f, 0, 0),
+                false));
+
+            soundManager.Play2D("BG-Music");
+
+            // First riddle in the game.............
             soundEffect =
               Content.Load<SoundEffect>("Assets/Audio/Placeholder/Entering-1");
 
             soundManager.Add(new Cue(
-                "NEntering",
+                "Riddle1",
                 soundEffect,
                 SoundCategoryType.Alarm,
                 new Vector3(0.25f, 0, 0),
                 false));
+                soundManager.Play2D("Riddle1");
+            Application.SoundManager.Pause("Riddle1");
 
+
+            //Second riddle in the game..........
             soundEffect =
                Content.Load<SoundEffect>("Assets/Audio/Placeholder/Entering-Kitchen");
 
             soundManager.Add(new Cue(
-                "NEKitchen",
+                "Riddle2",
                 soundEffect,
                 SoundCategoryType.Alarm,
                 new Vector3(0.25f, 0, 0),
                 false));
+                soundManager.Play2D("Riddle2");
+            Application.SoundManager.Pause("Riddle2");
 
+
+            // Third riddle in the game........
             soundEffect =
                Content.Load<SoundEffect>("Assets/Audio/Placeholder/Grandfather-Note");
 
             soundManager.Add(new Cue(
-                "NFKey",
+                "Riddle3",
                 soundEffect,
                 SoundCategoryType.Alarm,
                 new Vector3(0.25f, 0, 0),
                 false));
-
+                soundManager.Play2D("Riddle3");
+            Application.SoundManager.Pause("Riddle3");
 
         }
 
@@ -1700,6 +1673,10 @@ namespace GD.App
 
         #region Actions - Update, Draw
 
+
+       
+
+
         protected override void Update(GameTime gameTime)
         {
             #region Menu On/Off with U/P
@@ -1717,6 +1694,50 @@ namespace GD.App
 
             #endregion
 
+            // My Code..............
+
+            #region Walking Sounds
+
+            if (Input.Keys.IsPressed(Keys.W) || Input.Keys.IsPressed(Keys.A) || Input.Keys.IsPressed(Keys.S) || Input.Keys.IsPressed(Keys.D))
+            {
+             
+                Application.SoundManager.Resume("walk");
+                Application.SoundManager.Resume("BG-Music");
+            }
+            else
+            {
+                Application.SoundManager.Pause("walk");
+            }
+
+            #endregion
+
+
+            #region Riddles testing 
+
+            if (Input.Keys.IsPressed(Keys.NumPad1))
+            {
+                Application.SoundManager.Resume("Riddle1");
+                Application.SoundManager.Pause("Riddle2");
+                Application.SoundManager.Pause("Riddle3");
+
+            }
+            else if(Input.Keys.IsPressed(Keys.NumPad2))
+            {
+                Application.SoundManager.Pause("Riddle1");
+                Application.SoundManager.Resume("Riddle2");
+                Application.SoundManager.Pause("Riddle3");
+            }
+            else if(Input.Keys.IsPressed(Keys.NumPad3))
+            {
+                Application.SoundManager.Pause("Riddle1");
+                Application.SoundManager.Pause("Riddle2");
+                Application.SoundManager.Resume("Riddle3");
+            }
+           
+
+            #endregion
+
+
 #if DEMO
 
             #region Demo - UI - progress bar
@@ -1730,21 +1751,6 @@ namespace GD.App
             {
                 object[] parameters = { "progress bar - health - 1", -1 };
                 EventDispatcher.Raise(new EventData(EventCategoryType.UI, EventActionType.OnHealthDelta, parameters));
-            }
-
-            #endregion
-
-            #region Walking Sounds
-
-            if (Input.Keys.IsPressed(Keys.W) || Input.Keys.IsPressed(Keys.A) || Input.Keys.IsPressed(Keys.S) || Input.Keys.IsPressed(Keys.D))
-            {
-             
-                Application.SoundManager.Resume("walk");
-
-            }
-            else
-            {
-                Application.SoundManager.Pause("walk");
             }
 
             #endregion
