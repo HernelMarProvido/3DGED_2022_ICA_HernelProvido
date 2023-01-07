@@ -96,7 +96,9 @@ namespace GD.App
 
         private void DemoStateManagerEvent()
         {
+            EventDispatcher.Subscribe(EventCategoryType.Menu, HandleEvent);
             EventDispatcher.Subscribe(EventCategoryType.Player, HandleEvent);
+            EventDispatcher.Subscribe(EventCategoryType.GameObject, HandleEvent);
         }
 
         private void HandleEvent(EventData eventData)
@@ -480,7 +482,7 @@ namespace GD.App
             #region Third Person
 
             cameraGameObject = new GameObject(AppData.THIRD_PERSON_CAMERA_NAME);
-            cameraGameObject.Transform = new Transform(null, null, null);
+            cameraGameObject.Transform = new Transform(null, new Vector3(-35, 0, 0), null);
             cameraGameObject.AddComponent(new Camera(
                 AppData.FIRST_PERSON_HALF_FOV, //MathHelper.PiOver2 / 2,
                 (float)_graphics.PreferredBackBufferWidth / _graphics.PreferredBackBufferHeight,
@@ -499,8 +501,8 @@ namespace GD.App
 
             //camera 1
             cameraGameObject = new GameObject(AppData.FIRST_PERSON_CAMERA_NAME);
-            cameraGameObject.Transform = new Transform(null, null,
-                AppData.FIRST_PERSON_DEFAULT_CAMERA_POSITION);
+            cameraGameObject.Transform = new Transform(null, null, AppData.FIRST_PERSON_DEFAULT_CAMERA_POSITION);
+                
 
             #region Camera - View & Projection
 
@@ -547,6 +549,9 @@ namespace GD.App
 
             #endregion
 
+           
+
+
             cameraManager.Add(cameraGameObject.Name, cameraGameObject);
 
             #endregion First Person
@@ -582,6 +587,7 @@ namespace GD.App
 
             #endregion Security
 
+            // Curve camera to show an overview of my game space!
             #region Curve
 
             Curve3D curve3D = new Curve3D(CurveLoopType.Oscillate);
@@ -625,6 +631,13 @@ namespace GD.App
 
             //My Content
             InitializeWalls();
+            InitializeSpheres1();
+            InitializeSpheres2();
+            InitializeSpheres3();
+
+            InitializeRiddle1();
+            InitializeRiddle2();
+            InitializeRiddle3();
         }
 
         private void InitializeNonCollidableContent(float worldScale)
@@ -655,9 +668,11 @@ namespace GD.App
             //  throw new NotImplementedException();
         }
 
-        #region My Object Models
+        #region My Object Models 
 
         // Creating a simple Level Design for my Game
+
+        #region Walls
         private void InitializeWalls()
         {
 
@@ -787,8 +802,331 @@ namespace GD.App
                 gameObject.AddComponent(collider);
                 sceneManager.ActiveScene.Add(gameObject);
             }
+
+           
+
+        }
+         #endregion
+
+
+        #region Answer Spheres
+
+        private void InitializeSpheres1()
+        {
+            //answer 1
+            var gameObject = new GameObject("Answer Sphere 1", ObjectType.Static, RenderType.Opaque);
+
+
+            //Object size, rotation, position
+            gameObject.Transform = new Transform(
+                new Vector3(1, 1, 1),
+                new Vector3(0, 0, 0),
+                new Vector3(-10, 2, -45));
+
+            //Assest path of object
+            var texture = Content.Load<Texture2D>("Assets/Textures/Walls/sphere_txt");
+            var model = Content.Load<Model>("Assets/Models/sphere");
+            var mesh = new Engine.ModelMesh(_graphics.GraphicsDevice, model);
+
+            //put object into game..
+            gameObject.AddComponent(new Renderer(
+                new GDBasicEffect(litEffect),
+                new Material(texture, 1f, Color.Yellow),
+                mesh));
+
+
+            sceneManager.ActiveScene.Add(gameObject);
+
+
+            // Asnwer 2
+            var gameObject2 = new GameObject("Answer Sphere 2", ObjectType.Static, RenderType.Opaque);
+
+            //Object size, rotation, position
+            gameObject2.Transform = new Transform(
+                new Vector3(1, 1, 1),
+                new Vector3(0, 0, 0),
+                new Vector3(0, 2, -45));
+
+            //Assest path of object
+            var texture2 = Content.Load<Texture2D>("Assets/Textures/Walls/sphere_txt");
+            var model2 = Content.Load<Model>("Assets/Models/sphere");
+            var mesh2 = new Engine.ModelMesh(_graphics.GraphicsDevice, model2);
+
+            //put object into game..
+            gameObject2.AddComponent(new Renderer(
+                new GDBasicEffect(litEffect),
+                new Material(texture, 1f, Color.Green),
+                mesh));
+
+            sceneManager.ActiveScene.Add(gameObject2);
+
+
+            //answer 3
+            var gameObject3 = new GameObject("Answer Sphere 1", ObjectType.Static, RenderType.Opaque);
+
+
+            //Object size, rotation, position
+            gameObject3.Transform = new Transform(
+                new Vector3(1, 1, 1),
+                new Vector3(0, 0, 0),
+                new Vector3(10, 2, -45));
+
+            //Assest path of object
+            var texture3 = Content.Load<Texture2D>("Assets/Textures/Walls/sphere_txt");
+            var model3 = Content.Load<Model>("Assets/Models/sphere");
+            var mesh3 = new Engine.ModelMesh(_graphics.GraphicsDevice, model3);
+
+            //put object into game..
+            gameObject3.AddComponent(new Renderer(
+                new GDBasicEffect(litEffect),
+                new Material(texture, 1f, Color.Red),
+                mesh));
+
+
+            sceneManager.ActiveScene.Add(gameObject3);
+
         }
 
+        private void InitializeSpheres2()
+        {
+            //answer 1
+            var gameObject = new GameObject("Answer Sphere 1", ObjectType.Static, RenderType.Opaque);
+
+
+            //Object size, rotation, position
+            gameObject.Transform = new Transform(
+                new Vector3(1, 1, 1),
+                new Vector3(0, 0, 0),
+                new Vector3(-10, 2, -95));
+
+            //Assest path of object
+            var texture = Content.Load<Texture2D>("Assets/Textures/Walls/sphere_txt");
+            var model = Content.Load<Model>("Assets/Models/sphere");
+            var mesh = new Engine.ModelMesh(_graphics.GraphicsDevice, model);
+
+            //put object into game..
+            gameObject.AddComponent(new Renderer(
+                new GDBasicEffect(litEffect),
+                new Material(texture, 1f, Color.Yellow),
+                mesh));
+
+
+            sceneManager.ActiveScene.Add(gameObject);
+
+
+            // Asnwer 2
+            var gameObject2 = new GameObject("Answer Sphere 2", ObjectType.Static, RenderType.Opaque);
+
+            //Object size, rotation, position
+            gameObject2.Transform = new Transform(
+                new Vector3(1, 1, 1),
+                new Vector3(0, 0, 0),
+                new Vector3(0, 2, -95));
+
+            //Assest path of object
+            var texture2 = Content.Load<Texture2D>("Assets/Textures/Walls/sphere_txt");
+            var model2 = Content.Load<Model>("Assets/Models/sphere");
+            var mesh2 = new Engine.ModelMesh(_graphics.GraphicsDevice, model2);
+
+            //put object into game..
+            gameObject2.AddComponent(new Renderer(
+                new GDBasicEffect(litEffect),
+                new Material(texture, 1f, Color.Green),
+                mesh));
+
+            sceneManager.ActiveScene.Add(gameObject2);
+
+
+            //answer 3
+            var gameObject3 = new GameObject("Answer Sphere 1", ObjectType.Static, RenderType.Opaque);
+
+
+            //Object size, rotation, position
+            gameObject3.Transform = new Transform(
+                new Vector3(1, 1, 1),
+                new Vector3(0, 0, 0),
+                new Vector3(10, 2, -95));
+
+            //Assest path of object
+            var texture3 = Content.Load<Texture2D>("Assets/Textures/Walls/sphere_txt");
+            var model3 = Content.Load<Model>("Assets/Models/sphere");
+            var mesh3 = new Engine.ModelMesh(_graphics.GraphicsDevice, model3);
+
+            //put object into game..
+            gameObject3.AddComponent(new Renderer(
+                new GDBasicEffect(litEffect),
+                new Material(texture, 1f, Color.Red),
+                mesh));
+
+
+            sceneManager.ActiveScene.Add(gameObject3);
+
+        }
+
+        private void InitializeSpheres3()
+        {
+            //answer 1
+            var gameObject = new GameObject("Answer Sphere 1", ObjectType.Static, RenderType.Opaque);
+
+
+            //Object size, rotation, position
+            gameObject.Transform = new Transform(
+                new Vector3(1, 1, 1),
+                new Vector3(0, 0, 0),
+                new Vector3(-10, 2, -145));
+
+            //Assest path of object
+            var texture = Content.Load<Texture2D>("Assets/Textures/Walls/sphere_txt");
+            var model = Content.Load<Model>("Assets/Models/sphere");
+            var mesh = new Engine.ModelMesh(_graphics.GraphicsDevice, model);
+
+            //put object into game..
+            gameObject.AddComponent(new Renderer(
+                new GDBasicEffect(litEffect),
+                new Material(texture, 1f, Color.Yellow),
+                mesh));
+
+
+            sceneManager.ActiveScene.Add(gameObject);
+
+
+            // Asnwer 2
+            var gameObject2 = new GameObject("Answer Sphere 2", ObjectType.Static, RenderType.Opaque);
+
+            //Object size, rotation, position
+            gameObject2.Transform = new Transform(
+                new Vector3(1, 1, 1),
+                new Vector3(0, 0, 0),
+                new Vector3(0, 2, -145));
+
+            //Assest path of object
+            var texture2 = Content.Load<Texture2D>("Assets/Textures/Walls/sphere_txt");
+            var model2 = Content.Load<Model>("Assets/Models/sphere");
+            var mesh2 = new Engine.ModelMesh(_graphics.GraphicsDevice, model2);
+
+            //put object into game..
+            gameObject2.AddComponent(new Renderer(
+                new GDBasicEffect(litEffect),
+                new Material(texture, 1f, Color.Green),
+                mesh));
+
+            sceneManager.ActiveScene.Add(gameObject2);
+
+
+            //answer 3
+            var gameObject3 = new GameObject("Answer Sphere 1", ObjectType.Static, RenderType.Opaque);
+
+
+            //Object size, rotation, position
+            gameObject3.Transform = new Transform(
+                new Vector3(1, 1, 1),
+                new Vector3(0, 0, 0),
+                new Vector3(10, 2, -145));
+
+            //Assest path of object
+            var texture3 = Content.Load<Texture2D>("Assets/Textures/Walls/sphere_txt");
+            var model3 = Content.Load<Model>("Assets/Models/sphere");
+            var mesh3 = new Engine.ModelMesh(_graphics.GraphicsDevice, model3);
+
+            //put object into game..
+            gameObject3.AddComponent(new Renderer(
+                new GDBasicEffect(litEffect),
+                new Material(texture, 1f, Color.Red),
+                mesh));
+
+
+            sceneManager.ActiveScene.Add(gameObject3);
+
+        }
+
+
+        #endregion
+
+
+        #region Riddle Platform 
+
+        private void InitializeRiddle1()
+        {
+            //game object
+            var gameObject = new GameObject("Spawn 1", ObjectType.Static, RenderType.Opaque);
+            gameObject.GameObjectType = GameObjectType.Consumable;
+
+            //Object size, rotation, position
+            gameObject.Transform = new Transform(
+                new Vector3(5, 0.1f, 5),
+                new Vector3(0, 0, 0),
+                new Vector3(0, 0.1f, -25));
+
+            //Assest path of object
+            var texture = Content.Load<Texture2D>("Assets/Textures/Walls/Castle Towers UV New");
+            var model = Content.Load<Model>("Assets/Models/cube");
+            var mesh = new Engine.ModelMesh(_graphics.GraphicsDevice, model);
+
+            //put object into game..
+            gameObject.AddComponent(new Renderer(
+                new GDBasicEffect(litEffect),
+                new Material(texture, 1f, Color.Black),
+                mesh));
+
+
+            sceneManager.ActiveScene.Add(gameObject);
+        }
+
+        private void InitializeRiddle2()
+        {
+            //game object
+            var gameObject = new GameObject("Spawn 1", ObjectType.Static, RenderType.Opaque);
+            gameObject.GameObjectType = GameObjectType.Consumable;
+
+            //Object size, rotation, position
+            gameObject.Transform = new Transform(
+                new Vector3(5, 0.1f, 5),
+                new Vector3(0, 0, 0),
+                new Vector3(0, 0.1f, -75));
+
+            //Assest path of object
+            var texture = Content.Load<Texture2D>("Assets/Textures/Walls/Castle Towers UV New");
+            var model = Content.Load<Model>("Assets/Models/cube");
+            var mesh = new Engine.ModelMesh(_graphics.GraphicsDevice, model);
+
+            //put object into game..
+            gameObject.AddComponent(new Renderer(
+                new GDBasicEffect(litEffect),
+                new Material(texture, 1f, Color.Black),
+                mesh));
+
+
+            sceneManager.ActiveScene.Add(gameObject);
+        }
+
+        private void InitializeRiddle3()
+        {
+            //game object
+            var gameObject = new GameObject("Spawn 1", ObjectType.Static, RenderType.Opaque);
+            gameObject.GameObjectType = GameObjectType.Consumable;
+
+            //Object size, rotation, position
+            gameObject.Transform = new Transform(
+                new Vector3(5, 0.1f, 5),
+                new Vector3(0, 0, 0),
+                new Vector3(0, 0.1f, -125));
+
+            //Assest path of object
+            var texture = Content.Load<Texture2D>("Assets/Textures/Walls/Castle Towers UV New");
+            var model = Content.Load<Model>("Assets/Models/cube");
+            var mesh = new Engine.ModelMesh(_graphics.GraphicsDevice, model);
+
+            //put object into game..
+            gameObject.AddComponent(new Renderer(
+                new GDBasicEffect(litEffect),
+                new Material(texture, 1f, Color.Black),
+                mesh));
+
+
+            sceneManager.ActiveScene.Add(gameObject);
+        }
+
+        #endregion
 
         #endregion
 

@@ -235,12 +235,6 @@
 /processorParam:DebugMode=Auto
 /build:Assets/Models/Wall/File.fx
 
-#begin Assets/Models/Wall/File.fx
-/importer:EffectImporter
-/processor:EffectProcessor
-/processorParam:DebugMode=Auto
-/build:Assets/Models/Wall/File.fx
-
 #begin Assets/Textures/Button/button_DefaultMaterial_Base_color.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -744,4 +738,16 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Assets/Textures/Walls/Castle Towers UV New.png
+
+#begin Assets/Textures/Walls/sphere_txt.jpg
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Assets/Textures/Walls/sphere_txt.jpg
 
