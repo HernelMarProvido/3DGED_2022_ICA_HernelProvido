@@ -50,10 +50,20 @@ namespace GD.App
 
         #region Camera - First Person
 
+        // new cameras
         public static readonly string FIRST_PERSON_CAMERA_NAME = "fpc 1";
+        public static readonly string FIRST_PERSON_CAMERA_NAME2 = "fpc 2";
+        public static readonly string FIRST_PERSON_CAMERA_NAME3 = "fpc 3";
+        public static readonly string FIRST_PERSON_CAMERA_NAME4= "fpc 4";
+
         public static readonly float FIRST_PERSON_MOVE_SPEED = 0.036f;
         public static readonly float FIRST_PERSON_STRAFE_SPEED = 0.6f * FIRST_PERSON_MOVE_SPEED;
-        public static readonly Vector3 FIRST_PERSON_DEFAULT_CAMERA_POSITION = new Vector3(0, 3, -5);
+
+        // New spots for cameras
+        public static readonly Vector3 FIRST_PERSON_DEFAULT_CAMERA_POSITION = new Vector3(0, 5, -15);
+        public static readonly Vector3 FIRST_PERSON_DEFAULT_CAMERA_POSITION2 = new Vector3(0, 5, -65);
+        public static readonly Vector3 FIRST_PERSON_DEFAULT_CAMERA_POSITION3 = new Vector3(0, 5, -115);
+        public static readonly Vector3 FIRST_PERSON_DEFAULT_CAMERA_POSITION4 = new Vector3(0, 5, -165);
 
         public static readonly float FIRST_PERSON_CAMERA_FCP = 3000;
         public static readonly float FIRST_PERSON_CAMERA_NCP = 0.1f;

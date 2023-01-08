@@ -50,6 +50,7 @@ namespace GD.App
         public Vector3 rOne = new Vector3(0, 3, -25);
         public Vector3 rTwo = new Vector3(0, 3, -75);
         public Vector3 rThree = new Vector3(0, 3, -125);
+        public Vector3 win = new Vector3(0, 3, -175);
 
         public bool orb1 = false;
         public bool orb2 = false;
@@ -647,7 +648,7 @@ namespace GD.App
             soundManager.Play2D("lose");
             Application.SoundManager.Pause("lose");
 
-            // Sounds for Losing the game
+            // Sounds for Winning the game
             soundEffect =
               Content.Load<SoundEffect>("Assets/Audio/Diegetic/wingame");
 
@@ -733,8 +734,11 @@ namespace GD.App
 
             #endregion
 
+            // Using First Person 
+            // Idea was to attack character on center of screen to act as 3rd person camera.......
             #region First Person
 
+            #region Cam 1
             //camera 1
             cameraGameObject = new GameObject(AppData.FIRST_PERSON_CAMERA_NAME);
             cameraGameObject.Transform = new Transform(null, null, AppData.FIRST_PERSON_DEFAULT_CAMERA_POSITION);
@@ -785,10 +789,185 @@ namespace GD.App
 
             #endregion
 
-           
+            cameraManager.Add(cameraGameObject.Name, cameraGameObject);
 
+            #endregion
+            // >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>
+            // // >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>
+            // >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>
+            // // >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>
+            #region Cam 2
+            //camera 2
+            cameraGameObject = new GameObject(AppData.FIRST_PERSON_CAMERA_NAME2);
+            cameraGameObject.Transform = new Transform(null, null, AppData.FIRST_PERSON_DEFAULT_CAMERA_POSITION2);
+
+
+            #region Camera - View & Projection
+
+            cameraGameObject.AddComponent(
+             new Camera(
+             AppData.FIRST_PERSON_HALF_FOV, //MathHelper.PiOver2 / 2,
+             (float)_graphics.PreferredBackBufferWidth / _graphics.PreferredBackBufferHeight,
+             AppData.FIRST_PERSON_CAMERA_NCP, //0.1f,
+             AppData.FIRST_PERSON_CAMERA_FCP,
+             new Viewport(0, 0, _graphics.PreferredBackBufferWidth,
+             _graphics.PreferredBackBufferHeight))); // 3000
+
+            #endregion
+
+            #region Collision - Add capsule
+
+            //adding a collidable surface that enables acceleration, jumping
+            var characterCollider2 = new CharacterCollider(cameraGameObject, true);
+
+            cameraGameObject.AddComponent(characterCollider2);
+            characterCollider2.AddPrimitive(new Capsule(
+                cameraGameObject.Transform.Translation,
+                Matrix.CreateRotationX(MathHelper.PiOver2),
+                1, 3.6f),
+                new MaterialProperties(0.2f, 0.8f, 0.7f));
+            characterCollider2.Enable(cameraGameObject, false, 1);
+
+            #endregion
+
+            #region Collision - Add Controller for movement (now with collision)
+
+            cameraGameObject.AddComponent(new CollidableFirstPersonController(cameraGameObject,
+                characterCollider2,
+                AppData.FIRST_PERSON_MOVE_SPEED, AppData.FIRST_PERSON_STRAFE_SPEED,
+                AppData.PLAYER_ROTATE_SPEED_VECTOR2, AppData.FIRST_PERSON_CAMERA_SMOOTH_FACTOR, true,
+                AppData.PLAYER_COLLIDABLE_JUMP_HEIGHT));
+
+            #endregion
+
+            #region 3D Sound
+
+            //added ability for camera to listen to 3D sounds
+            cameraGameObject.AddComponent(new AudioListenerBehaviour());
+
+            #endregion
 
             cameraManager.Add(cameraGameObject.Name, cameraGameObject);
+            #endregion
+            // >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>
+            // // >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>
+            // >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>
+            // // >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>
+            #region Cam 3
+            //camera 3
+            cameraGameObject = new GameObject(AppData.FIRST_PERSON_CAMERA_NAME3);
+            cameraGameObject.Transform = new Transform(null, null, AppData.FIRST_PERSON_DEFAULT_CAMERA_POSITION3);
+
+
+            #region Camera - View & Projection
+
+            cameraGameObject.AddComponent(
+             new Camera(
+             AppData.FIRST_PERSON_HALF_FOV, //MathHelper.PiOver2 / 2,
+             (float)_graphics.PreferredBackBufferWidth / _graphics.PreferredBackBufferHeight,
+             AppData.FIRST_PERSON_CAMERA_NCP, //0.1f,
+             AppData.FIRST_PERSON_CAMERA_FCP,
+             new Viewport(0, 0, _graphics.PreferredBackBufferWidth,
+             _graphics.PreferredBackBufferHeight))); // 3000
+
+            #endregion
+
+            #region Collision - Add capsule
+
+            //adding a collidable surface that enables acceleration, jumping
+            var characterCollider3 = new CharacterCollider(cameraGameObject, true);
+
+            cameraGameObject.AddComponent(characterCollider3);
+            characterCollider3.AddPrimitive(new Capsule(
+                cameraGameObject.Transform.Translation,
+                Matrix.CreateRotationX(MathHelper.PiOver2),
+                1, 3.6f),
+                new MaterialProperties(0.2f, 0.8f, 0.7f));
+            characterCollider3.Enable(cameraGameObject, false, 1);
+
+            #endregion
+
+            #region Collision - Add Controller for movement (now with collision)
+
+            cameraGameObject.AddComponent(new CollidableFirstPersonController(cameraGameObject,
+                characterCollider3,
+                AppData.FIRST_PERSON_MOVE_SPEED, AppData.FIRST_PERSON_STRAFE_SPEED,
+                AppData.PLAYER_ROTATE_SPEED_VECTOR2, AppData.FIRST_PERSON_CAMERA_SMOOTH_FACTOR, true,
+                AppData.PLAYER_COLLIDABLE_JUMP_HEIGHT));
+
+            #endregion
+
+            #region 3D Sound
+
+            //added ability for camera to listen to 3D sounds
+            cameraGameObject.AddComponent(new AudioListenerBehaviour());
+
+            #endregion
+
+            cameraManager.Add(cameraGameObject.Name, cameraGameObject);
+            #endregion
+            // >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>
+            // // >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>
+            // >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>
+            // // >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>
+            #region Cam 4
+            //camera 4
+            cameraGameObject = new GameObject(AppData.FIRST_PERSON_CAMERA_NAME4);
+            cameraGameObject.Transform = new Transform(null, null, AppData.FIRST_PERSON_DEFAULT_CAMERA_POSITION4);
+
+
+            #region Camera - View & Projection
+
+            cameraGameObject.AddComponent(
+             new Camera(
+             AppData.FIRST_PERSON_HALF_FOV, //MathHelper.PiOver2 / 2,
+             (float)_graphics.PreferredBackBufferWidth / _graphics.PreferredBackBufferHeight,
+             AppData.FIRST_PERSON_CAMERA_NCP, //0.1f,
+             AppData.FIRST_PERSON_CAMERA_FCP,
+             new Viewport(0, 0, _graphics.PreferredBackBufferWidth,
+             _graphics.PreferredBackBufferHeight))); // 3000
+
+            #endregion
+
+            #region Collision - Add capsule
+
+            //adding a collidable surface that enables acceleration, jumping
+            var characterCollider4 = new CharacterCollider(cameraGameObject, true);
+
+            cameraGameObject.AddComponent(characterCollider4);
+            characterCollider4.AddPrimitive(new Capsule(
+                cameraGameObject.Transform.Translation,
+                Matrix.CreateRotationX(MathHelper.PiOver2),
+                1, 3.6f),
+                new MaterialProperties(0.2f, 0.8f, 0.7f));
+            characterCollider4.Enable(cameraGameObject, false, 1);
+
+            #endregion
+
+            #region Collision - Add Controller for movement (now with collision)
+
+            cameraGameObject.AddComponent(new CollidableFirstPersonController(cameraGameObject,
+                characterCollider4,
+                AppData.FIRST_PERSON_MOVE_SPEED, AppData.FIRST_PERSON_STRAFE_SPEED,
+                AppData.PLAYER_ROTATE_SPEED_VECTOR2, AppData.FIRST_PERSON_CAMERA_SMOOTH_FACTOR, true,
+                AppData.PLAYER_COLLIDABLE_JUMP_HEIGHT));
+
+            #endregion
+
+            #region 3D Sound
+
+            //added ability for camera to listen to 3D sounds
+            cameraGameObject.AddComponent(new AudioListenerBehaviour());
+
+            #endregion
+
+            cameraManager.Add(cameraGameObject.Name, cameraGameObject);
+
+            #endregion
+            // >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>
+            // // >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>
+            // >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>
+            // // >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>// >>>>>>>>>>>>>>>>>>>>>>>>>>
 
             #endregion First Person
 
@@ -827,14 +1006,14 @@ namespace GD.App
             #region Curve
 
             Curve3D curve3D = new Curve3D(CurveLoopType.Oscillate);
-            curve3D.Add(new Vector3(0, 25, 0), 0);
-            curve3D.Add(new Vector3(0, 25, -150), 10000);
-            curve3D.Add(new Vector3(0, 25, 5), 10000);
+            curve3D.Add(new Vector3(15, 25, 0), 5);
+            curve3D.Add(new Vector3(15, 25, -175), 10000);
+            curve3D.Add(new Vector3(15, 25, 5), 10000);
             //curve3D.Add(new Vector3(0, 25, 100), 10000);
 
             cameraGameObject = new GameObject(AppData.CURVE_CAMERA_NAME);
 
-            cameraGameObject.Transform = new Transform(null, new Vector3(-35, 0, 0), null);
+            cameraGameObject.Transform = new Transform(null, new Vector3(-55, 75, 0), null);
                
             cameraGameObject.AddComponent(new Camera(
                 MathHelper.PiOver2 / 2,
@@ -874,6 +1053,7 @@ namespace GD.App
             InitializeRiddle1();
             InitializeRiddle2();
             InitializeRiddle3();
+            InitializeRiddle4();
         }
 
         private void InitializeNonCollidableContent(float worldScale)
@@ -1437,6 +1617,33 @@ namespace GD.App
             sceneManager.ActiveScene.Add(gameObject);
         }
 
+        private void InitializeRiddle4()
+        {
+            //game object
+            var gameObject = new GameObject("Win", ObjectType.Static, RenderType.Opaque);
+            gameObject.GameObjectType = GameObjectType.Consumable;
+
+            //Object size, rotation, position
+            gameObject.Transform = new Transform(
+                new Vector3(5, 0.1f, 5),
+                new Vector3(0, 0, 0),
+                new Vector3(0, 0.1f, -175));
+
+            //Assest path of object
+            var texture = Content.Load<Texture2D>("Assets/Textures/Walls/Castle Towers UV New");
+            var model = Content.Load<Model>("Assets/Models/cube");
+            var mesh = new Engine.ModelMesh(_graphics.GraphicsDevice, model);
+
+            //put object into game..
+            gameObject.AddComponent(new Renderer(
+                new GDBasicEffect(litEffect),
+                new Material(texture, 1f, Color.Black),
+                mesh));
+
+
+            sceneManager.ActiveScene.Add(gameObject);
+        }
+
         #endregion
 
         #endregion
@@ -1975,16 +2182,6 @@ namespace GD.App
 
         protected override void Update(GameTime gameTime)
         {
-            #region Game Over
-
-            if (Input.Keys.WasJustPressed(Keys.P))
-            {
-                EventDispatcher.Raise(new EventData(EventCategoryType.Menu, EventActionType.OnPause));
-                Application.SoundManager.Resume("lose");
-            }
-            
-
-            #endregion
 
             // My Code..............
 
@@ -2030,12 +2227,14 @@ namespace GD.App
                 Application.SoundManager.Pause("Riddle2");
                 Application.SoundManager.Resume("Riddle3");
             }
-           
+
 
             #endregion
 
 
-            #region sound for Collections, Win & Lose state.
+            #region Sound for Collecting, Win or Lose.
+            //If player get to the end wins the game
+            win = rTriggers(win, "win");
 
             if (Input.Keys.IsPressed(Keys.Up))
             {
@@ -2062,22 +2261,27 @@ namespace GD.App
             #endregion
 
 
-#if DEMO
-
-
-
-            #region Demo - Camera switching
+            #region Camera switching
 
             if (Input.Keys.IsPressed(Keys.F1))
                 cameraManager.SetActiveCamera(AppData.FIRST_PERSON_CAMERA_NAME);
             else if (Input.Keys.IsPressed(Keys.F2))
-                cameraManager.SetActiveCamera(AppData.SECURITY_CAMERA_NAME);
+                cameraManager.SetActiveCamera(AppData.FIRST_PERSON_CAMERA_NAME2);
             else if (Input.Keys.IsPressed(Keys.F3))
-                cameraManager.SetActiveCamera(AppData.CURVE_CAMERA_NAME);
+                cameraManager.SetActiveCamera(AppData.FIRST_PERSON_CAMERA_NAME3);
             else if (Input.Keys.IsPressed(Keys.F4))
-                cameraManager.SetActiveCamera(AppData.THIRD_PERSON_CAMERA_NAME);
+                cameraManager.SetActiveCamera(AppData.FIRST_PERSON_CAMERA_NAME4);
+            else if (Input.Keys.IsPressed(Keys.F5))
+                cameraManager.SetActiveCamera(AppData.CURVE_CAMERA_NAME);
 
-            #endregion Demo - Camera switching
+            #endregion 
+
+
+
+#if DEMO
+
+
+
 
             #region Demo - Gamepad
 
