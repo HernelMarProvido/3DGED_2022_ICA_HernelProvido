@@ -51,6 +51,10 @@ namespace GD.App
         public Vector3 rTwo = new Vector3(0, 3, -75);
         public Vector3 rThree = new Vector3(0, 3, -125);
 
+        public bool orb1 = false;
+        public bool orb2 = false;
+        public bool orb3 = false;
+
 #if DEMO
 
         private event EventHandler OnChanged;
@@ -110,11 +114,26 @@ namespace GD.App
             switch (eventData.EventActionType)
             {
                 case EventActionType.OnWin:
-                    System.Diagnostics.Debug.WriteLine(eventData.Parameters[0] as string);
+                    Application.SceneManager.ActiveScene.Remove(ObjectType.Static, RenderType.Opaque, (x) => x.Name == ((GameObject)eventData.Parameters[0]).Name);
+
+                    if (((GameObject)eventData.Parameters[0]).Name == "answer1")
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Correct!");
+                        orb1 = true;
+                        InitializeOrb();
+                    }
                     break;
 
                 case EventActionType.OnLose:
-                    System.Diagnostics.Debug.WriteLine(eventData.Parameters[2] as string);
+                    Application.SceneManager.ActiveScene.Remove(ObjectType.Static, RenderType.Opaque, (x) => x.Name == ((GameObject)eventData.Parameters[0]).Name);
+
+                    if (((GameObject)eventData.Parameters[0]).Name == "lose1" || ((GameObject)eventData.Parameters[0]).Name == "lose2")
+                    {
+                        System.Diagnostics.Debug.WriteLine($"You Lose!");     
+                        EventDispatcher.Raise(new EventData(EventCategoryType.Menu, EventActionType.OnPause));
+                    }
+                    EventDispatcher.Raise(new EventData(EventCategoryType.Menu,
+                   EventActionType.OnPause));
                     break;
 
                 default:
@@ -195,7 +214,7 @@ namespace GD.App
             //add UI and menu
             InitializeUI();
             InitializeMenu();
-            InitializeOrb();
+           // InitializeOrb();
 
             //send all initial events
 
@@ -381,7 +400,7 @@ namespace GD.App
             #endregion
 
             #region progress controller
-            uiGameObject.AddComponent(new UIProgressBarController(0, 10));
+            //uiGameObject.AddComponent(new UIProgressBarController(0, 10));
             #endregion
 
             #region color change behaviour
@@ -925,8 +944,8 @@ namespace GD.App
         private void InitializeSpheres1()
         {
             //answer 1
-            var gameObject = new GameObject("Answer Sphere 1", ObjectType.Static, RenderType.Opaque);
-
+            var gameObject = new GameObject("answer1", ObjectType.Static, RenderType.Opaque);
+            gameObject.GameObjectType = GameObjectType.Collectible;
 
             //Object size, rotation, position
             gameObject.Transform = new Transform(
@@ -945,12 +964,21 @@ namespace GD.App
                 new Material(texture, 1f, Color.Yellow),
                 mesh));
 
+           
+            var collider = new Collider(gameObject, true);
+            collider.AddPrimitive(new Box(
+                gameObject.Transform.Translation,
+                gameObject.Transform.Rotation,
+                new Vector3(2, 2, 2)),
+                new MaterialProperties(0.8f, 0.8f, 0.7f));
+            collider.Enable(gameObject, true, 5);
+
 
             sceneManager.ActiveScene.Add(gameObject);
 
 
             // Asnwer 2
-            var gameObject2 = new GameObject("Answer Sphere 2", ObjectType.Static, RenderType.Opaque);
+            var gameObject2 = new GameObject("lose1", ObjectType.Static, RenderType.Opaque);
 
             //Object size, rotation, position
             gameObject2.Transform = new Transform(
@@ -969,11 +997,20 @@ namespace GD.App
                 new Material(texture, 1f, Color.Green),
                 mesh));
 
+            //Collider for objects
+            var collider2 = new Collider(gameObject2, true);
+            collider2.AddPrimitive(new Box(
+                gameObject2.Transform.Translation,
+                gameObject2.Transform.Rotation,
+                new Vector3(2, 2, 2)),
+                new MaterialProperties(0.8f, 0.8f, 0.7f));
+            collider2.Enable(gameObject2, true, 5);
+
             sceneManager.ActiveScene.Add(gameObject2);
 
 
             //answer 3
-            var gameObject3 = new GameObject("Answer Sphere 1", ObjectType.Static, RenderType.Opaque);
+            var gameObject3 = new GameObject("lose2", ObjectType.Static, RenderType.Opaque);
 
 
             //Object size, rotation, position
@@ -992,6 +1029,16 @@ namespace GD.App
                 new GDBasicEffect(litEffect),
                 new Material(texture, 1f, Color.Red),
                 mesh));
+
+
+            //Collider for objects
+            var collider3 = new Collider(gameObject3, true);
+            collider3.AddPrimitive(new Box(
+                gameObject3.Transform.Translation,
+                gameObject3.Transform.Rotation,
+                new Vector3(2, 2, 2)),
+                new MaterialProperties(0.8f, 0.8f, 0.7f));
+            collider3.Enable(gameObject3, true, 5);
 
 
             sceneManager.ActiveScene.Add(gameObject3);

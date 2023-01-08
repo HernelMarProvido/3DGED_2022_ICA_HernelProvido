@@ -111,7 +111,7 @@ namespace GD.App
         #region Picking
 
         public static readonly float PICKING_MIN_PICK_DISTANCE = 2;
-        public static readonly float PICKING_MAX_PICK_DISTANCE = 100;
+        public static readonly float PICKING_MAX_PICK_DISTANCE = 3;
 
         #endregion
 
