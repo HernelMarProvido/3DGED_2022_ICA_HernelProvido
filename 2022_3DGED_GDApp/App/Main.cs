@@ -1,7 +1,7 @@
 ﻿#region Pre-compiler directives
 
 #define DEMO
-//#define SHOW_DEBUG_INFO
+#define SHOW_DEBUG_INFO
 
 #endregion
 
@@ -46,6 +46,10 @@ namespace GD.App
         private MyStateManager stateManager;
         private SceneManager<Scene2D> uiManager;
         private SceneManager<Scene2D> menuManager;
+
+        public Vector3 rOne = new Vector3(0, 3, -25);
+        public Vector3 rTwo = new Vector3(0, 3, -75);
+        public Vector3 rThree = new Vector3(0, 3, -125);
 
 #if DEMO
 
@@ -1696,9 +1700,25 @@ namespace GD.App
 
         #region Actions - Update, Draw
 
+        #region triggers for Riddles
+        public Vector3 rTriggers(Vector3 temp, string sound)
+        {
+            if (temp != Vector3.Zero)
+                if (cameraManager.activeCamera.transform.translation.X <= temp.X + 2 && cameraManager.activeCamera.transform.translation.X >= temp.X - 2)
+                    if (cameraManager.activeCamera.transform.translation.Z <= temp.Z + 2 && cameraManager.activeCamera.transform.translation.Z >= temp.Z - 2)
+                    {
+                        temp = Vector3.Zero;
+                        Application.SoundManager.Stop("rOne");
+                        Application.SoundManager.Stop("rTwo");
+                        Application.SoundManager.Stop("rThree");
+          
+                        Application.SoundManager.Play2D(sound);
 
-       
+                    }
+            return temp;
 
+        }
+        #endregion
 
         protected override void Update(GameTime gameTime)
         {
@@ -1735,8 +1755,14 @@ namespace GD.App
             #endregion
 
 
-            #region Riddles testing 
+            #region Riddles  
 
+            // Trigger spots for riddles to start playing 
+            rOne = rTriggers(rOne, "Riddle1");
+            rTwo = rTriggers(rTwo, "Riddle2");
+            rThree = rTriggers(rThree, "Riddle3");
+
+            // Testing if Riddles are connected
             if (Input.Keys.IsPressed(Keys.NumPad1))
             {
                 Application.SoundManager.Resume("Riddle1");
@@ -1759,6 +1785,8 @@ namespace GD.App
            
 
             #endregion
+
+
 
 
 #if DEMO
