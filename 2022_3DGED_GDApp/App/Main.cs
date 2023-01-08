@@ -120,7 +120,7 @@ namespace GD.App
                     {
                         System.Diagnostics.Debug.WriteLine($"Correct!");
                         orb1 = true;
-                        InitializeOrb();
+                        //InitializeOrb();
                     }
                     break;
 
@@ -132,8 +132,8 @@ namespace GD.App
                         System.Diagnostics.Debug.WriteLine($"You Lose!");     
                         EventDispatcher.Raise(new EventData(EventCategoryType.Menu, EventActionType.OnPause));
                     }
-                    EventDispatcher.Raise(new EventData(EventCategoryType.Menu,
-                   EventActionType.OnPause));
+                    EventDispatcher.Raise(new EventData(EventCategoryType.Menu,EventActionType.OnPause));
+                   
                     break;
 
                 default:
@@ -214,7 +214,11 @@ namespace GD.App
             //add UI and menu
             InitializeUI();
             InitializeMenu();
-           // InitializeOrb();
+
+            //Un coment to see the collection bar filled....
+            InitializeOrb();
+            InitializeOrb2();
+            InitializeOrb3();
 
             //send all initial events
 
@@ -335,7 +339,7 @@ namespace GD.App
 
             uiGameObject = new GameObject("progress bar - health - 1");
             uiGameObject.Transform = new Transform(
-                new Vector3(0.5f, 0.5f, 0), //s
+                new Vector3(0.27f, 0.5f, 0), //s
                 new Vector3(0, 0, 0), //r
                 new Vector3(10, 650, 0)); //t
 
@@ -374,6 +378,7 @@ namespace GD.App
 
             #endregion
         }
+
         private void InitializeOrb()
         {
             GameObject uiGameObject = null;
@@ -389,7 +394,7 @@ namespace GD.App
             uiGameObject.Transform = new Transform(
                 new Vector3(0.1f, 0.1f, 0), //s
                 new Vector3(0, 0, 0), //r
-                new Vector3(30, 662, 0)); //t
+                new Vector3(40, 662, 0)); //t
 
             #region texture
 
@@ -399,8 +404,53 @@ namespace GD.App
 
             #endregion
 
-            #region progress controller
-            //uiGameObject.AddComponent(new UIProgressBarController(0, 10));
+          
+
+            #region color change behaviour
+            uiGameObject.AddComponent(new UIColorFlipOnTimeBehaviour(Color.White, Color.Silver, 300));
+            #endregion
+
+            #endregion
+
+            //add to scene2D
+            mainHUD.Add(uiGameObject);
+
+            #region Add Scene to Manager and Set Active
+
+            //add scene2D to manager
+            uiManager.Add(mainHUD.ID, mainHUD);
+
+            //what ui do i see first?
+            uiManager.SetActiveScene(mainHUD.ID);
+
+            #endregion
+
+            #endregion
+        }
+
+        private void InitializeOrb2()
+        {
+            GameObject uiGameObject = null;
+            Material2D material = null;
+            Texture2D Orb = Content.Load<Texture2D>("Assets/Textures/HUD/orb2");
+            Scene2D mainHUD = Application.UISceneManager.SetActiveScene("game HUD");
+
+            #region Orb
+
+            #region Add UI Element
+
+            uiGameObject = new GameObject("orb icon 2");
+            uiGameObject.Transform = new Transform(
+                new Vector3(0.1f, 0.1f, 0), //s
+                new Vector3(0, 0, 0), //r
+                new Vector3(80, 662, 0)); //t
+
+            #region texture
+
+            //material and renderer
+            material = new TextureMaterial2D(Orb, Color.White);
+            uiGameObject.AddComponent(new Renderer2D(material));
+
             #endregion
 
             #region color change behaviour
@@ -424,6 +474,55 @@ namespace GD.App
 
             #endregion
         }
+
+        private void InitializeOrb3()
+        {
+            GameObject uiGameObject = null;
+            Material2D material = null;
+            Texture2D Orb = Content.Load<Texture2D>("Assets/Textures/HUD/orb2");
+            Scene2D mainHUD = Application.UISceneManager.SetActiveScene("game HUD");
+
+            #region Orb
+
+            #region Add UI Element
+
+            uiGameObject = new GameObject("orb icon 3");
+            uiGameObject.Transform = new Transform(
+                new Vector3(0.1f, 0.1f, 0), //s
+                new Vector3(0, 0, 0), //r
+                new Vector3(120, 662, 0)); //t
+
+            #region texture
+
+            //material and renderer
+            material = new TextureMaterial2D(Orb, Color.White);
+            uiGameObject.AddComponent(new Renderer2D(material));
+
+            #endregion
+
+            #region color change behaviour
+            uiGameObject.AddComponent(new UIColorFlipOnTimeBehaviour(Color.White, Color.Silver, 300));
+            #endregion
+
+            #endregion
+
+            //add to scene2D
+            mainHUD.Add(uiGameObject);
+
+            #region Add Scene to Manager and Set Active
+
+            //add scene2D to manager
+            uiManager.Add(mainHUD.ID, mainHUD);
+
+            //what ui do i see first?
+            uiManager.SetActiveScene(mainHUD.ID);
+
+            #endregion
+
+            #endregion
+        }
+
+
 
 
         private void SetTitle(string title)
@@ -508,6 +607,60 @@ namespace GD.App
                 false));
                 soundManager.Play2D("Riddle3");
             Application.SoundManager.Pause("Riddle3");
+
+            // Sounds for collecting correct orbs
+            soundEffect =
+              Content.Load<SoundEffect>("Assets/Audio/Diegetic/bell");
+
+            soundManager.Add(new Cue(
+                "collect",
+                soundEffect,
+                SoundCategoryType.Alarm,
+                new Vector3(0.25f, 0, 0),
+                false));
+            soundManager.Play2D("collect");
+            Application.SoundManager.Pause("collect");
+
+            // Sounds for collecting correct orbs number 2
+            soundEffect =
+              Content.Load<SoundEffect>("Assets/Audio/Diegetic/cling1");
+
+            soundManager.Add(new Cue(
+                "collect2",
+                soundEffect,
+                SoundCategoryType.Alarm,
+                new Vector3(0.25f, 0, 0),
+                false));
+            soundManager.Play2D("collect2");
+            Application.SoundManager.Pause("collect2");
+
+            // Sounds for Losing the game
+            soundEffect =
+              Content.Load<SoundEffect>("Assets/Audio/Diegetic/Loser");
+
+            soundManager.Add(new Cue(
+                "lose",
+                soundEffect,
+                SoundCategoryType.Alarm,
+                new Vector3(0.25f, 0, 0),
+                false));
+            soundManager.Play2D("lose");
+            Application.SoundManager.Pause("lose");
+
+            // Sounds for Losing the game
+            soundEffect =
+              Content.Load<SoundEffect>("Assets/Audio/Diegetic/wingame");
+
+            soundManager.Add(new Cue(
+                "win",
+                soundEffect,
+                SoundCategoryType.Alarm,
+                new Vector3(0.25f, 0, 0),
+                false));
+            soundManager.Play2D("win");
+            Application.SoundManager.Pause("win");
+
+
 
         }
 
@@ -1822,18 +1975,14 @@ namespace GD.App
 
         protected override void Update(GameTime gameTime)
         {
-            #region Menu On/Off with U/P
+            #region Game Over
 
             if (Input.Keys.WasJustPressed(Keys.P))
             {
-                EventDispatcher.Raise(new EventData(EventCategoryType.Menu,
-                    EventActionType.OnPause));
+                EventDispatcher.Raise(new EventData(EventCategoryType.Menu, EventActionType.OnPause));
+                Application.SoundManager.Resume("lose");
             }
-            else if (Input.Keys.WasJustPressed(Keys.U))
-            {
-                EventDispatcher.Raise(new EventData(EventCategoryType.Menu,
-                   EventActionType.OnPlay));
-            }
+            
 
             #endregion
 
@@ -1843,7 +1992,6 @@ namespace GD.App
 
             if (Input.Keys.IsPressed(Keys.W) || Input.Keys.IsPressed(Keys.A) || Input.Keys.IsPressed(Keys.S) || Input.Keys.IsPressed(Keys.D))
             {
-             
                 Application.SoundManager.Resume("walk");
                 Application.SoundManager.Resume("BG-Music");
             }
@@ -1887,24 +2035,36 @@ namespace GD.App
             #endregion
 
 
+            #region sound for Collections, Win & Lose state.
+
+            if (Input.Keys.IsPressed(Keys.Up))
+            {
+                Application.SoundManager.Resume("collect");
+            }
+            else if (Input.Keys.IsPressed(Keys.Down))
+            {
+                Application.SoundManager.Resume("collect2");
+            }
+            else if (Input.Keys.WasJustPressed(Keys.Left))
+            {
+                EventDispatcher.Raise(new EventData(EventCategoryType.Menu, EventActionType.OnPause));
+                Application.SoundManager.Resume("lose");
+                Application.SoundManager.Pause("BG-Music");
+            }
+            else if (Input.Keys.WasJustPressed(Keys.Right))
+            {
+                EventDispatcher.Raise(new EventData(EventCategoryType.Menu, EventActionType.OnPause));
+                Application.SoundManager.Resume("win");
+                Application.SoundManager.Pause("BG-Music");
+            }
+           
+
+            #endregion
 
 
 #if DEMO
 
-            #region Demo - UI - progress bar
 
-            if (Input.Keys.WasJustPressed(Keys.Up))
-            {
-                object[] parameters = { "orb icon", 1 };
-                EventDispatcher.Raise(new EventData(EventCategoryType.UI, EventActionType.OnHealthDelta, parameters));
-            }
-            else if (Input.Keys.WasJustPressed(Keys.Down))
-            {
-                object[] parameters = { "orb icon", -1 };
-                EventDispatcher.Raise(new EventData(EventCategoryType.UI, EventActionType.OnHealthDelta, parameters));
-            }
-
-            #endregion
 
             #region Demo - Camera switching
 
