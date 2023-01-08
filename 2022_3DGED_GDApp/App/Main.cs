@@ -195,6 +195,7 @@ namespace GD.App
             //add UI and menu
             InitializeUI();
             InitializeMenu();
+            InitializeOrb();
 
             //send all initial events
 
@@ -302,11 +303,12 @@ namespace GD.App
             #endregion
         }
 
+        // Bar for Collections
         private void InitializeUI()
         {
             GameObject uiGameObject = null;
             Material2D material = null;
-            Texture2D texture = Content.Load<Texture2D>("Assets/Textures/Menu/Controls/progress_white");
+            Texture2D texture = Content.Load<Texture2D>("Assets/Textures/HUD/InventoryBkg_HUD");
 
             var mainHUD = new Scene2D("game HUD");
 
@@ -314,10 +316,9 @@ namespace GD.App
 
             uiGameObject = new GameObject("progress bar - health - 1");
             uiGameObject.Transform = new Transform(
-                new Vector3(1, 1, 0), //s
+                new Vector3(0.5f, 0.5f, 0), //s
                 new Vector3(0, 0, 0), //r
-                new Vector3(_graphics.PreferredBackBufferWidth - texture.Width - 20,
-                20, 0)); //t
+                new Vector3(10, 650, 0)); //t
 
             #region texture
 
@@ -329,13 +330,13 @@ namespace GD.App
 
             #region progress controller
 
-            uiGameObject.AddComponent(new UIProgressBarController(0, 10));
+           // uiGameObject.AddComponent(new UIProgressBarController(0, 10));
 
             #endregion
 
             #region color change behaviour
 
-            uiGameObject.AddComponent(new UIColorFlipOnTimeBehaviour(Color.White, Color.Green, 500));
+           // uiGameObject.AddComponent(new UIColorFlipOnTimeBehaviour(Color.White, Color.Green, 500));
 
             #endregion
 
@@ -354,6 +355,57 @@ namespace GD.App
 
             #endregion
         }
+        private void InitializeOrb()
+        {
+            GameObject uiGameObject = null;
+            Material2D material = null;
+            Texture2D Orb = Content.Load<Texture2D>("Assets/Textures/HUD/orb2");
+            Scene2D mainHUD = Application.UISceneManager.SetActiveScene("game HUD");
+
+            #region Orb
+
+            #region Add UI Element
+
+            uiGameObject = new GameObject("orb icon");
+            uiGameObject.Transform = new Transform(
+                new Vector3(0.1f, 0.1f, 0), //s
+                new Vector3(0, 0, 0), //r
+                new Vector3(30, 662, 0)); //t
+
+            #region texture
+
+            //material and renderer
+            material = new TextureMaterial2D(Orb, Color.White);
+            uiGameObject.AddComponent(new Renderer2D(material));
+
+            #endregion
+
+            #region progress controller
+            uiGameObject.AddComponent(new UIProgressBarController(0, 10));
+            #endregion
+
+            #region color change behaviour
+            uiGameObject.AddComponent(new UIColorFlipOnTimeBehaviour(Color.White, Color.Silver, 300));
+            #endregion
+
+            #endregion
+
+            //add to scene2D
+            mainHUD.Add(uiGameObject);
+
+            #region Add Scene to Manager and Set Active
+
+            //add scene2D to manager
+            uiManager.Add(mainHUD.ID, mainHUD);
+
+            //what ui do i see first?
+            uiManager.SetActiveScene(mainHUD.ID);
+
+            #endregion
+
+            #endregion
+        }
+
 
         private void SetTitle(string title)
         {
@@ -1700,6 +1752,7 @@ namespace GD.App
 
         #region Actions - Update, Draw
 
+        // Code for tigger points ingame for sounds
         #region triggers for Riddles
         public Vector3 rTriggers(Vector3 temp, string sound)
         {
@@ -1795,12 +1848,12 @@ namespace GD.App
 
             if (Input.Keys.WasJustPressed(Keys.Up))
             {
-                object[] parameters = { "progress bar - health - 1", 1 };
+                object[] parameters = { "orb icon", 1 };
                 EventDispatcher.Raise(new EventData(EventCategoryType.UI, EventActionType.OnHealthDelta, parameters));
             }
             else if (Input.Keys.WasJustPressed(Keys.Down))
             {
-                object[] parameters = { "progress bar - health - 1", -1 };
+                object[] parameters = { "orb icon", -1 };
                 EventDispatcher.Raise(new EventData(EventCategoryType.UI, EventActionType.OnHealthDelta, parameters));
             }
 
