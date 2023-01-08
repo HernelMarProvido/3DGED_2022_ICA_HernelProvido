@@ -1,7 +1,7 @@
 ﻿#region Pre-compiler directives
 
 #define DEMO
-#define SHOW_DEBUG_INFO
+//#define SHOW_DEBUG_INFO
 
 #endregion
 
@@ -328,7 +328,11 @@ namespace GD.App
             #endregion
         }
 
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         // Bar for Collections
+
         private void InitializeUI()
         {
             GameObject uiGameObject = null;
@@ -523,6 +527,7 @@ namespace GD.App
 
             #endregion
         }
+
 
         //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
