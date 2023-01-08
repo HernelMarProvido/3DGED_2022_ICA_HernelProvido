@@ -79,6 +79,30 @@
 /processorParam:Quality=Best
 /build:Assets/Audio/Placeholder/Grandfather-Note.wav
 
+#begin Assets/Audio/Riddles/Full.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Assets/Audio/Riddles/Full.wav
+
+#begin Assets/Audio/Riddles/Riddle1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Assets/Audio/Riddles/Riddle1.wav
+
+#begin Assets/Audio/Riddles/Riddle2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Assets/Audio/Riddles/Riddle2.wav
+
+#begin Assets/Audio/Riddles/Riddle3.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Assets/Audio/Riddles/Riddle3.wav
+
 #begin Assets/Fonts/menu.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor

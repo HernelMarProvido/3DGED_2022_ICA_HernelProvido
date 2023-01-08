@@ -60,7 +60,7 @@ namespace GD.App
         public static readonly float FIRST_PERSON_STRAFE_SPEED = 0.6f * FIRST_PERSON_MOVE_SPEED;
 
         // New spots for cameras
-        public static readonly Vector3 FIRST_PERSON_DEFAULT_CAMERA_POSITION = new Vector3(0, 5, -15);
+        public static readonly Vector3 FIRST_PERSON_DEFAULT_CAMERA_POSITION = new Vector3(0, 5, -10);
         public static readonly Vector3 FIRST_PERSON_DEFAULT_CAMERA_POSITION2 = new Vector3(0, 5, -65);
         public static readonly Vector3 FIRST_PERSON_DEFAULT_CAMERA_POSITION3 = new Vector3(0, 5, -115);
         public static readonly Vector3 FIRST_PERSON_DEFAULT_CAMERA_POSITION4 = new Vector3(0, 5, -165);

@@ -47,10 +47,11 @@ namespace GD.App
         private SceneManager<Scene2D> uiManager;
         private SceneManager<Scene2D> menuManager;
 
-        public Vector3 rOne = new Vector3(0, 3, -25);
+        public Vector3 rOne = new Vector3(0, 3, -35);
         public Vector3 rTwo = new Vector3(0, 3, -75);
         public Vector3 rThree = new Vector3(0, 3, -125);
         public Vector3 win = new Vector3(0, 3, -175);
+        public Vector3 ready = new Vector3(0, 3, -15);
 
         public bool orb1 = false;
         public bool orb2 = false;
@@ -523,7 +524,9 @@ namespace GD.App
             #endregion
         }
 
-
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 
         private void SetTitle(string title)
@@ -539,6 +542,10 @@ namespace GD.App
             LoadModels();
         }
 
+
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         // Code for the sounds here
         private void LoadSounds()
         {
@@ -568,9 +575,23 @@ namespace GD.App
 
             soundManager.Play2D("BG-Music");
 
+            // Instructions for playing.............
+            soundEffect =
+              Content.Load<SoundEffect>("Assets/Audio/Riddles/Full");
+
+            soundManager.Add(new Cue(
+                "Ready",
+                soundEffect,
+                SoundCategoryType.Alarm,
+                new Vector3(0.25f, 0, 0),
+                false));
+            soundManager.Play2D("Ready");
+            Application.SoundManager.Pause("Ready");
+
+
             // First riddle in the game.............
             soundEffect =
-              Content.Load<SoundEffect>("Assets/Audio/Placeholder/Entering-1");
+              Content.Load<SoundEffect>("Assets/Audio/Riddles/Riddle1");
 
             soundManager.Add(new Cue(
                 "Riddle1",
@@ -584,7 +605,7 @@ namespace GD.App
 
             //Second riddle in the game..........
             soundEffect =
-               Content.Load<SoundEffect>("Assets/Audio/Placeholder/Entering-Kitchen");
+               Content.Load<SoundEffect>("Assets/Audio/Riddles/Riddle2");
 
             soundManager.Add(new Cue(
                 "Riddle2",
@@ -598,7 +619,7 @@ namespace GD.App
 
             // Third riddle in the game........
             soundEffect =
-               Content.Load<SoundEffect>("Assets/Audio/Placeholder/Grandfather-Note");
+               Content.Load<SoundEffect>("Assets/Audio/Riddles/Riddle3");
 
             soundManager.Add(new Cue(
                 "Riddle3",
@@ -711,6 +732,9 @@ namespace GD.App
             litEffect.EnableDefaultLighting();
         }
 
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         private void InitializeCameras()
         {
             //camera
@@ -1036,7 +1060,9 @@ namespace GD.App
             cameraManager.SetActiveCamera(AppData.FIRST_PERSON_CAMERA_NAME);
         }
 
-
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         // To Initialize my stuff >>><<<
         private void InitializeCollidableContent(float worldScale)
         {
@@ -1084,6 +1110,9 @@ namespace GD.App
             //  throw new NotImplementedException();
         }
 
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+       
         #region My Object Models 
 
         // Creating a simple Level Design for my Game
@@ -1327,7 +1356,7 @@ namespace GD.App
             //put object into game..
             gameObject2.AddComponent(new Renderer(
                 new GDBasicEffect(litEffect),
-                new Material(texture, 1f, Color.Green),
+                new Material(texture, 1f, Color.Blue),
                 mesh));
 
             //Collider for objects
@@ -1422,7 +1451,7 @@ namespace GD.App
             //put object into game..
             gameObject2.AddComponent(new Renderer(
                 new GDBasicEffect(litEffect),
-                new Material(texture, 1f, Color.Green),
+                new Material(texture, 1f, Color.Blue),
                 mesh));
 
             sceneManager.ActiveScene.Add(gameObject2);
@@ -1498,7 +1527,7 @@ namespace GD.App
             //put object into game..
             gameObject2.AddComponent(new Renderer(
                 new GDBasicEffect(litEffect),
-                new Material(texture, 1f, Color.Green),
+                new Material(texture, 1f, Color.Blue),
                 mesh));
 
             sceneManager.ActiveScene.Add(gameObject2);
@@ -1546,7 +1575,7 @@ namespace GD.App
             gameObject.Transform = new Transform(
                 new Vector3(5, 0.1f, 5),
                 new Vector3(0, 0, 0),
-                new Vector3(0, 0.1f, -25));
+                new Vector3(0, 0.1f, -35));
 
             //Assest path of object
             var texture = Content.Load<Texture2D>("Assets/Textures/Walls/Castle Towers UV New");
@@ -1647,6 +1676,9 @@ namespace GD.App
         #endregion
 
         #endregion
+
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
         private void InitializeCollidableGround(float worldScale)
         {
@@ -2159,7 +2191,11 @@ namespace GD.App
 
         #region Actions - Update, Draw
 
-        // Code for tigger points ingame for sounds
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        
+        // Code for tigger points in-game for sounds
+
         #region triggers for Riddles
         public Vector3 rTriggers(Vector3 temp, string sound)
         {
@@ -2180,9 +2216,13 @@ namespace GD.App
         }
         #endregion
 
+
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         protected override void Update(GameTime gameTime)
         {
-
+            //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+            //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // My Code..............
 
             #region Walking Sounds
@@ -2203,6 +2243,7 @@ namespace GD.App
             #region Riddles  
 
             // Trigger spots for riddles to start playing 
+            ready = rTriggers(ready, "Ready");
             rOne = rTriggers(rOne, "Riddle1");
             rTwo = rTriggers(rTwo, "Riddle2");
             rThree = rTriggers(rThree, "Riddle3");
@@ -2213,6 +2254,7 @@ namespace GD.App
                 Application.SoundManager.Resume("Riddle1");
                 Application.SoundManager.Pause("Riddle2");
                 Application.SoundManager.Pause("Riddle3");
+                Application.SoundManager.Pause("Ready");
 
             }
             else if(Input.Keys.IsPressed(Keys.NumPad2))
@@ -2220,12 +2262,14 @@ namespace GD.App
                 Application.SoundManager.Pause("Riddle1");
                 Application.SoundManager.Resume("Riddle2");
                 Application.SoundManager.Pause("Riddle3");
+                Application.SoundManager.Pause("Ready");
             }
             else if(Input.Keys.IsPressed(Keys.NumPad3))
             {
                 Application.SoundManager.Pause("Riddle1");
                 Application.SoundManager.Pause("Riddle2");
                 Application.SoundManager.Resume("Riddle3");
+                Application.SoundManager.Pause("Ready");
             }
 
 
@@ -2277,10 +2321,10 @@ namespace GD.App
             #endregion 
 
 
+            //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+            //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 #if DEMO
-
-
 
 
             #region Demo - Gamepad
